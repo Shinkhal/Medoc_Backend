@@ -7,14 +7,16 @@ import {
   markSampleCollected,
   markSampleDelayed,
 } from '../controllers/sampleController';
+import { protect } from '../middlewares/authMiddleware';
+import { hospitalProtect } from '../middlewares/hospitalMiddleware';
 
 const router = express.Router();
 
-router.post('/create', createSample);
-router.get('/all', getAllSamples);
-router.get('/:id', getSampleById);
-router.put('/:id', updateSample);
-router.patch('/:id/collect', markSampleCollected);
-router.patch('/:id/delay', markSampleDelayed);
+router.post('/create',hospitalProtect, createSample);
+router.get('/all',  getAllSamples);
+router.get('/:id',  getSampleById);
+router.put('/:id',hospitalProtect, updateSample);
+router.patch('/:id/collect',protect, markSampleCollected);
+router.patch('/:id/delay',protect, markSampleDelayed);
 
 export default router;
